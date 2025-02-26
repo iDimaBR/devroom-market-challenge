@@ -1,0 +1,5 @@
+name: DevRoomMarket
+version: '${project.version}'
+main: com.github.idimabr.DevRoomMarket
+api-version: '1.21'
+authors: [iDimaBR]
