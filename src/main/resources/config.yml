@@ -1,3 +1,30 @@
 mongodb:
   uri: "mongodb://localhost:27017"
   database: "devroom"
+
+discord:
+  enabled: true
+  webhook: "https://discord.com/api/webhooks/"
+  embed:
+    username: "Market Announcer"
+    title: "New item listed"
+    description:
+      - "A new item has been listed for sale in the marketplace."
+    color: "#FFFFFF"
+    footer: "Devroom Market System"
+    fields:
+      - name: "Item Type"
+        value: "{type}"
+        inline: true
+      - name: "Seller"
+        value: "{seller}}"
+        inline: true
+      - name: "Buyer"
+        value: "{buyer}"
+        inline: true
+      - name: "Price"
+        value: "$ {price}"
+        inline: true
+      - name: "Listed At"
+        value: "{date}"
+        inline: true

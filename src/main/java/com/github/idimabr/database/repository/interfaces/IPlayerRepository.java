@@ -1,9 +1,6 @@
 package com.github.idimabr.database.repository.interfaces;
 
 import org.bson.Document;
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
 import java.util.UUID;
 
 public interface IPlayerRepository {

@@ -1,8 +1,8 @@
 package com.github.idimabr.database.repository.impl;
 
+import com.github.idimabr.database.connection.MongoDBConnection;
 import com.github.idimabr.database.repository.interfaces.IBlackMarketRepository;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class BlackMarketRepository implements IBlackMarketRepository {
     private final MongoCollection<Document> collection;
 
-    public BlackMarketRepository(MongoDatabase database) {
-        this.collection = database.getCollection("blackmarket");
+    public BlackMarketRepository(MongoDBConnection database) {
+        this.collection = database.getDatabase().getCollection("blackmarket");
     }
 
     public void generate(Collection<Document> items) {

@@ -1,8 +1,8 @@
 package com.github.idimabr.database.repository.impl;
 
+import com.github.idimabr.database.connection.MongoDBConnection;
 import com.github.idimabr.database.repository.interfaces.IMarketRepository;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import java.util.ArrayList;
@@ -12,13 +12,14 @@ import java.util.UUID;
 public class MarketplaceRepository implements IMarketRepository {
     private final MongoCollection<Document> collection;
 
-    public MarketplaceRepository(MongoDatabase database) {
-        this.collection = database.getCollection("marketplace");
+    public MarketplaceRepository(MongoDBConnection database) {
+        this.collection = database.getDatabase().getCollection("marketplace");
     }
 
     @Override
-    public void create(UUID seller, String base64Item, double price) {
+    public void create(UUID itemID, UUID seller, String base64Item, double price) {
         Document doc = new Document("seller", seller.toString())
+                .append("itemID", itemID.toString())
                 .append("item", base64Item)
                 .append("price", price)
                 .append("listed_at", System.currentTimeMillis());
@@ -26,26 +27,26 @@ public class MarketplaceRepository implements IMarketRepository {
     }
 
     @Override
-    public void delete(String id) {
-        collection.deleteOne(Filters.eq("_id", id));
+    public void delete(UUID id) {
+        collection.deleteOne(Filters.eq("itemID", id.toString()));
     }
 
     @Override
-    public void update(String id, String base64Item, double price) {
+    public void update(UUID id, String base64Item, double price) {
         final Document document = get(id);
         if(document == null) return;
 
         document.append("item", base64Item);
         document.append("price", price);
         collection.updateOne(
-                Filters.eq("_id", id),
+                Filters.eq("itemID", id.toString()),
                 document
         );
     }
 
     @Override
-    public Document get(String id) {
-        return collection.find(Filters.eq("_id", id)).first();
+    public Document get(UUID id) {
+        return collection.find(Filters.eq("itemID", id.toString())).first();
     }
 
     @Override
