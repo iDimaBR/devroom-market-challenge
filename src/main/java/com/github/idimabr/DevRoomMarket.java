@@ -7,7 +7,6 @@ import com.github.idimabr.commands.TransactionsCommand;
 import com.github.idimabr.controller.MarketController;
 import com.github.idimabr.controller.PlayerController;
 import com.github.idimabr.database.connection.MongoDBConnection;
-import com.github.idimabr.database.repository.impl.BlackMarketRepository;
 import com.github.idimabr.database.repository.impl.MarketplaceRepository;
 import com.github.idimabr.database.repository.impl.PlayerRepository;
 import com.github.idimabr.database.repository.impl.TransactionRepository;
@@ -38,7 +37,6 @@ public final class DevRoomMarket extends JavaPlugin {
     private PlayerController playerController;
 
     private TransactionRepository transactionRepository;
-    private BlackMarketRepository blackMarketRepository;
     private MarketplaceRepository marketRepository;
     private VaultHook vaultHook;
     private DiscordHook discordHook;
@@ -71,10 +69,10 @@ public final class DevRoomMarket extends JavaPlugin {
     }
 
     private void loadCommands(){
-        getCommand("marketplace").setExecutor(new MarketplaceCommand(view));
-        getCommand("sell").setExecutor(new SellCommand(marketRepository, marketController));
-        getCommand("blackmarket").setExecutor(new BlackmarketCommand(view));
-        getCommand("transactions").setExecutor(new TransactionsCommand(view));
+        getCommand("marketplace").setExecutor(new MarketplaceCommand(config, view));
+        getCommand("sell").setExecutor(new SellCommand(config, marketRepository, marketController));
+        getCommand("blackmarket").setExecutor(new BlackmarketCommand(config, view));
+        getCommand("transactions").setExecutor(new TransactionsCommand(view, config));
     }
 
     private void loadListeners(){
@@ -86,7 +84,6 @@ public final class DevRoomMarket extends JavaPlugin {
         database = new MongoDBConnection(this);
         playerRepository = new PlayerRepository(database);
         transactionRepository = new TransactionRepository(database);
-        blackMarketRepository = new BlackMarketRepository(database);
         marketRepository = new MarketplaceRepository(database);
     }
 

@@ -1,6 +1,7 @@
 package com.github.idimabr.commands;
 
 import com.github.idimabr.menus.MarketMenu;
+import com.github.idimabr.utils.ConfigUtil;
 import lombok.AllArgsConstructor;
 import me.saiintbrisson.minecraft.ViewFrame;
 import org.bukkit.command.Command;
@@ -12,17 +13,18 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public class MarketplaceCommand implements CommandExecutor {
 
+    private final ConfigUtil config;
     private final ViewFrame view;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage("§cOnly players!.");
+            sender.sendMessage(config.getString("messages.only-players"));
             return false;
         }
 
         if(!sender.hasPermission("marketplace.view")){
-            sender.sendMessage("§cYou do not have permission to use this command.");
+            sender.sendMessage(config.getString("messages.no-permission"));
             return false;
         }
 

@@ -18,6 +18,7 @@ public class MarketController {
 
     public void unregister(MarketData data) {
         marketData.remove(data);
+        blackMarket.remove(data);
     }
 
     public void load(Collection<Document> all) {

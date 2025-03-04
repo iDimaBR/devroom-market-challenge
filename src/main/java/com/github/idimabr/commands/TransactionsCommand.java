@@ -2,6 +2,7 @@ package com.github.idimabr.commands;
 
 import com.github.idimabr.menus.BlackMarketMenu;
 import com.github.idimabr.menus.TransactionMenu;
+import com.github.idimabr.utils.ConfigUtil;
 import lombok.AllArgsConstructor;
 import me.saiintbrisson.minecraft.ViewFrame;
 import org.bukkit.command.Command;
@@ -14,16 +15,17 @@ import org.jetbrains.annotations.NotNull;
 public class TransactionsCommand implements CommandExecutor {
 
     private final ViewFrame view;
+    private final ConfigUtil config;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage("§cOnly players!.");
+            sender.sendMessage(config.getString("messages.only-players"));
             return false;
         }
 
         if(!sender.hasPermission("marketplace.history")){
-            sender.sendMessage("§cYou do not have permission to use this command.");
+            sender.sendMessage(config.getString("messages.no-permission"));
             return false;
         }
 

@@ -3,11 +3,16 @@ mongodb:
   database: "devroom"
 
 messages:
+  only-players: "&cOnly players can execute this command."
+  no-permission: "&cYou don't have permission to execute this command."
   error: "&cAn error occurred while trying to execute this command, please try join again."
   no-money: "&cYou don't have enough money to buy this item."
   buy-item: "&aYou bought from {seller} the item &f{name} &afor &f${price}&a."
   buy-item-seller: "&a{buyer} bought &f{name} &afrom you for &f${price}&a."
-
+  sell-usage: "&cUsage: /sell <price>"
+  invalid-price: "&cInvalid price, please enter a valid number."
+  hold-item: "&cYou must hold the item you want to sell."
+  sell-item: "&aYou listed item &afor sale for &f${price}&a."
 config:
   update-blackmarket: 5
 discord:
@@ -22,7 +27,7 @@ discord:
     footer: "Devroom Market System"
     fields:
       - name: "Item Type"
-        value: "{type}"
+        value: "{item}"
         inline: true
       - name: "Seller"
         value: "{seller}"

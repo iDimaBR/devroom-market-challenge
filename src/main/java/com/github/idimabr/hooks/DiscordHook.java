@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.OutputStream;
@@ -30,7 +31,7 @@ public class DiscordHook {
         this.webhookUrl = plugin.getConfig().getString("discord.webhook");
     }
 
-    public void send(MarketData data, Player buyer) {
+    public void send(MarketData data, Player buyer, String type) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 URL url = new URL(webhookUrl);
@@ -45,6 +46,13 @@ public class DiscordHook {
 
                 final FileConfiguration config = plugin.getConfig();
                 final ItemStack item = ItemSerializer.read(data.getItemBase64());
+                if(item == null) {
+                    Bukkit.getLogger().warning("ItemStack is null");
+                    return;
+                }
+
+                final ItemMeta meta = item.getItemMeta();
+                final String name = meta.hasDisplayName() ? meta.getDisplayName() : item.getType().name();
                 final int color = toDecimal(config.getString("discord.embed.color", "#FFFFFF"));
 
                 final List<Map<?, ?>> fieldsList = config.getMapList("discord.embed.fields");
@@ -56,10 +64,10 @@ public class DiscordHook {
                     fieldObject.addProperty(
                             "value",
                             field.get("value").toString()
-                                    .replace("{item}", item.getType().name())
-                                    .replace("{seller}", Bukkit.getOfflinePlayer(data.getSellerId()).getName())
+                                    .replace("{item}", name)
+                                    .replace("{seller}", data.getSellerName())
                                     .replace("{buyer}", buyer.getName())
-                                    .replace("{price}", "$" + data.getPrice())
+                                    .replace("{price}", (type.equals("normal") ? data.getPrice() : data.getPrice() * 0.5)+"")
                                     .replace("{date}", formattedDate)
                     );
                     fieldObject.addProperty("inline", Boolean.parseBoolean(field.get("inline").toString()));
@@ -93,7 +101,7 @@ public class DiscordHook {
                 connection.getResponseCode();
 
             } catch (Exception e) {
-                Bukkit.getLogger().warning("Erro ao enviar webhook: " + e.getMessage());
+                Bukkit.getLogger().warning("Error sending webhook: " + e.getMessage());
             }
         });
     }
