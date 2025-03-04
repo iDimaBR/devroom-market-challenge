@@ -70,8 +70,7 @@ public class ConfirmMenu extends View {
                 builder.setName(item.getString("name")
                         .replace("{name}", name)
                         .replace("{player}", player.getName())
-                        .replace("{buyer_price}", String.format("%.2f", buyerPrice))
-                        .replace("{seller_earnings}", String.format("%.2f", originalPrice))
+                        .replace("{price}", String.format("%.2f", originalPrice))
                         .replace("{seller}", data.getSellerName())
                         .replace("{date}", data.getListed())
                         .replace("&", "§"));
@@ -81,8 +80,7 @@ public class ConfirmMenu extends View {
                         .map(l -> l.replace("&", "§")
                                 .replace("{name}", name)
                                 .replace("{player}", player.getName())
-                                .replace("{buyer_price}", String.format("%.2f", buyerPrice))
-                                .replace("{seller_earnings}", String.format("%.2f", originalPrice))
+                                .replace("{price}", String.format("%.2f", originalPrice))
                                 .replace("{seller}", data.getSellerName())
                                 .replace("{date}", data.getListed()))
                         .collect(Collectors.toList()));
@@ -93,7 +91,7 @@ public class ConfirmMenu extends View {
                 final Economy economy = VaultHook.getEconomy();
                 if (!economy.has(player, buyerPrice)) {
                     player.sendMessage(config.getString("messages.no-money")
-                            .replace("{buyer_price}", String.format("%.2f", buyerPrice)));
+                            .replace("{price}", String.format("%.2f", buyerPrice)));
                     return;
                 }
 
@@ -127,14 +125,14 @@ public class ConfirmMenu extends View {
                 player.sendMessage(config.getString("messages.buy-item")
                         .replace("{seller}", data.getSellerName())
                         .replace("{name}", name)
-                        .replace("{buyer_price}", String.format("%.2f", buyerPrice)));
+                        .replace("{price}", String.format("%.2f", buyerPrice)));
 
                 final Player seller = Bukkit.getPlayer(data.getSellerId());
                 if (seller != null) {
                     seller.sendMessage(config.getString("messages.buy-item-seller")
                             .replace("{buyer}", player.getName())
                             .replace("{name}", name)
-                            .replace("{seller_earnings}", String.format("%.2f", originalPrice)));
+                            .replace("{price}", String.format("%.2f", originalPrice)));
                 }
                 discordHook.send(data, player, type);
                 context.open(MarketMenu.class);
