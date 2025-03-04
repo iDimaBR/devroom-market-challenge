@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface ITransaction {
 
-    void create(UUID seller, UUID buyer, String base64Item, double price);
+    void create(UUID seller, UUID buyer, UUID itemID, double price, long createdAt);
 
     Collection<Document> get(UUID seller, UUID buyer);
 }

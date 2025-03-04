@@ -60,7 +60,8 @@ public class SellCommand implements CommandExecutor {
         }
 
         final UUID itemID = UUID.randomUUID();
-        final String base64item = ItemSerializer.serialize(item);
+        final String base64item = ItemSerializer.write(item);
+
         marketController.register(new MarketData(
                 itemID,
                 player.getUniqueId(),

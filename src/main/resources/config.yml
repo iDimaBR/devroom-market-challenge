@@ -2,6 +2,14 @@ mongodb:
   uri: "mongodb://localhost:27017"
   database: "devroom"
 
+messages:
+  error: "&cAn error occurred while trying to execute this command, please try join again."
+  no-money: "&cYou don't have enough money to buy this item."
+  buy-item: "&aYou bought from {seller} the item &f{name} &afor &f${price}&a."
+  buy-item-seller: "&a{buyer} bought &f{name} &afrom you for &f${price}&a."
+
+config:
+  update-blackmarket: 5
 discord:
   enabled: true
   webhook: "https://discord.com/api/webhooks/"
@@ -17,7 +25,7 @@ discord:
         value: "{type}"
         inline: true
       - name: "Seller"
-        value: "{seller}}"
+        value: "{seller}"
         inline: true
       - name: "Buyer"
         value: "{buyer}"
@@ -28,3 +36,78 @@ discord:
       - name: "Listed At"
         value: "{date}"
         inline: true
+
+menu-config:
+  not-paginated:
+    slot-default: 0
+  back:
+    slot: 0
+    material: ARROW
+    name: "&cVoltar"
+  next:
+    slot: 8
+    material: ARROW
+    name: "&cPróximo"
+menus:
+  confirmation:
+    row: 3
+    title: "You confirm?"
+    items:
+      # no change this name
+      confirm:
+        slot: 13
+        material: GREEN_DYE
+        data: 0
+        name: "&aYes, buy it! ({name})"
+        lore:
+          - "&7Click here to confirm and pay ${price}."
+  market:
+    row: 5
+    title: "Market"
+    layout:
+      - "XXXXXXXXX"
+      - "XOOOOOOOX"
+      - "XOOOOOOOX"
+      - "XOOOOOOOX"
+      - "XXXXXXXXX"
+    item-format:
+      name: "&eProduct: &f{name}"
+      lore:
+        - "&7Price: &f{price}"
+        - "&7Listed at: &f{listed}"
+        - ""
+        - "&eClick here to buy."
+  blackmarket:
+    row: 5
+    title: "BlackMarket"
+    layout:
+      - "XXXXXXXXX"
+      - "XOOOOOOOX"
+      - "XOOOOOOOX"
+      - "XOOOOOOOX"
+      - "XXXXXXXXX"
+    item-format:
+      name: "&eProduct: &f{name}"
+      lore:
+        - "&7Price: &f{price} &c50% OFF"
+        - "&7Listed at: &f{listed}"
+        - ""
+        - "&eClick here to buy."
+  transaction:
+    row: 5
+    title: "Transactions"
+    layout:
+      - "XXXXXXXXX"
+      - "XOOOOOOOX"
+      - "XOOOOOOOX"
+      - "XOOOOOOOX"
+      - "XXXXXXXXX"
+    item-format:
+      material: PAPER
+      data: 0
+      name: "&eTransaction"
+      lore:
+        - "&7Date: &f{date}"
+        - "&7Price: &f{price}"
+        - "&7Seller: &f{seller}"
+        - "&7Buyer: &f{buyer}"

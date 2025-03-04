@@ -17,9 +17,21 @@ public class PlayerData {
     private double balance;
     private List<Transaction> transactions;
 
-    public PlayerData(double balance) {
+    public PlayerData(UUID uuid, double balance) {
+        this.uuid = uuid;
         this.name = Bukkit.getOfflinePlayer(uuid).getName();
         this.balance = balance;
         this.transactions = new ArrayList<>();
+    }
+
+    public PlayerData(UUID uuid) {
+        this.uuid = uuid;
+        this.name = Bukkit.getOfflinePlayer(uuid).getName();
+        this.balance = 0;
+        this.transactions = new ArrayList<>();
+    }
+
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
     }
 }

@@ -44,7 +44,7 @@ public class DiscordHook {
                 final String formattedDate = sdf.format(data.getListedAt());
 
                 final FileConfiguration config = plugin.getConfig();
-                final ItemStack item = ItemSerializer.deserialize(data.getItemBase64());
+                final ItemStack item = ItemSerializer.read(data.getItemBase64());
                 final int color = toDecimal(config.getString("discord.embed.color", "#FFFFFF"));
 
                 final List<Map<?, ?>> fieldsList = config.getMapList("discord.embed.fields");

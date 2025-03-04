@@ -17,13 +17,22 @@ public class TransactionRepository implements ITransaction {
     }
 
     @Override
-    public void create(UUID seller, UUID buyer, String base64Item, double price) {
+    public void create(UUID seller, UUID buyer, UUID itemID, double price, long createdAt) {
         Document doc = new Document("buyer", buyer.toString())
                 .append("seller", seller.toString())
-                .append("item", base64Item)
+                .append("itemID", itemID.toString())
                 .append("price", price)
-                .append("created_at", System.currentTimeMillis());
+                .append("created_at", createdAt);
         collection.insertOne(doc);
+    }
+
+    public Collection<Document> get(UUID uuid) {
+        return collection.find(
+                Filters.or(
+                        Filters.eq("buyer", uuid.toString()),
+                        Filters.eq("seller", uuid.toString())
+                )
+        ).into(new ArrayList<>());
     }
 
     @Override

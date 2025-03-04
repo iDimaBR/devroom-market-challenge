@@ -1,32 +1,33 @@
 package com.github.idimabr.utils;
 
 import org.bukkit.inventory.ItemStack;
-import java.io.*;
-import java.util.Base64;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 public class ItemSerializer {
 
-    public static String serialize(ItemStack item) {
+    public static String write(ItemStack item) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream)) {
+             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
 
-            objectOutput.writeObject(item);
-            return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            dataOutput.writeObject(item);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception ignored) {
+            return "";
         }
     }
 
-    public static ItemStack deserialize(String base64) {
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(base64));
-             ObjectInputStream objectInput = new ObjectInputStream(inputStream)) {
+    public static ItemStack read(String source) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(source));
+             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
 
-            return (ItemStack) objectInput.readObject();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            return (ItemStack) dataInput.readObject();
+        } catch (Exception ignored) {
             return null;
         }
     }

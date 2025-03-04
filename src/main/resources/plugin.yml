@@ -1,5 +1,20 @@
 name: DevRoomMarket
 version: '${project.version}'
 main: com.github.idimabr.DevRoomMarket
-api-version: '1.21'
+api-version: '1.20'
 authors: [iDimaBR]
+commands:
+  marketplace:
+    permission: marketplace.view
+    description: Open the marketplace menu
+    aliases: [market, marketmenu]
+  sell:
+    permission: marketplace.sell
+    description: Sell an item in the marketplace
+    aliases: [sellitem]
+  blackmarket:
+    permission: marketplace.blackmarket
+    description: Open the black market menu
+  transactions:
+    permission: marketplace.history
+    description: Open the transactions menu
